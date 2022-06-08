@@ -17,17 +17,17 @@ pub use mock_analytics::MockAnalytics;
 
 // if we are in debug mode OR the analytics feature is disabled
 // the `SegmentAnalytics` point to the mock instead of the real analytics
-#[cfg(any(debug_assertions, not(feature = "analytics")))]
+// #[cfg(any(debug_assertions, not(feature = "analytics")))]
 pub type SegmentAnalytics = mock_analytics::MockAnalytics;
-#[cfg(any(debug_assertions, not(feature = "analytics")))]
+// #[cfg(any(debug_assertions, not(feature = "analytics")))]
 pub type SearchAggregator = mock_analytics::SearchAggregator;
 
 // if we are in release mode and the feature analytics was enabled
 // we use the real analytics
-#[cfg(all(not(debug_assertions), feature = "analytics"))]
-pub type SegmentAnalytics = segment_analytics::SegmentAnalytics;
-#[cfg(all(not(debug_assertions), feature = "analytics"))]
-pub type SearchAggregator = segment_analytics::SearchAggregator;
+// #[cfg(all(not(debug_assertions), feature = "analytics"))]
+// pub type SegmentAnalytics = segment_analytics::SegmentAnalytics;
+// #[cfg(all(not(debug_assertions), feature = "analytics"))]
+// pub type SearchAggregator = segment_analytics::SearchAggregator;
 
 /// The Meilisearch config dir:
 /// `~/.config/Meilisearch` on *NIX or *BSD.
