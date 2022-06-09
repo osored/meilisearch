@@ -72,6 +72,10 @@ async fn run_http(
     analytics: Arc<dyn Analytics>,
 ) -> anyhow::Result<()> {
     let _enable_dashboard = &opt.env == "development";
+    let server_workers: usize = match opt.max_server_workers_count {
+        Some(count) => count.into(),
+        _ => num_cpus::get().into(),
+    };
     let opt_clone = opt.clone();
     let http_server = HttpServer::new(move || {
         create_app!(
@@ -82,6 +86,7 @@ async fn run_http(
             analytics.clone()
         )
     })
+    .workers(server_workers)
     // Disable signals allows the server to terminate immediately when a user enter CTRL-C
     .disable_signals();
 
@@ -101,14 +106,7 @@ pub fn print_launch_resume(opt: &Opt, user: &str) {
     let commit_date = option_env!("VERGEN_GIT_COMMIT_TIMESTAMP").unwrap_or("unknown");
 
     let ascii_name = r#"
-888b     d888          d8b 888 d8b                                            888
-8888b   d8888          Y8P 888 Y8P                                            888
-88888b.d88888              888                                                888
-888Y88888P888  .d88b.  888 888 888 .d8888b   .d88b.   8888b.  888d888 .d8888b 88888b.
-888 Y888P 888 d8P  Y8b 888 888 888 88K      d8P  Y8b     "88b 888P"  d88P"    888 "88b
-888  Y8P  888 88888888 888 888 888 "Y8888b. 88888888 .d888888 888    888      888  888
-888   "   888 Y8b.     888 888 888      X88 Y8b.     888  888 888    Y88b.    888  888
-888       888  "Y8888  888 888 888  88888P'  "Y8888  "Y888888 888     "Y8888P 888  888
+MS
 "#;
 
     eprintln!("{}", ascii_name);
@@ -152,9 +150,5 @@ Anonymous telemetry:\t\"Enabled\""
             If you need some protection in development mode, please export a key: export MEILI_MASTER_KEY=xxx");
     }
 
-    eprintln!();
-    eprintln!("Documentation:\t\thttps://docs.meilisearch.com");
-    eprintln!("Source code:\t\thttps://github.com/meilisearch/meilisearch");
-    eprintln!("Contact:\t\thttps://docs.meilisearch.com/resources/contact.html");
     eprintln!();
 }

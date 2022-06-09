@@ -41,12 +41,11 @@ pub struct Opt {
     #[clap(long, env = "MEILI_ENV", default_value = "development", possible_values = &POSSIBLE_ENV)]
     pub env: String,
 
-    /// Do not send analytics to Meili.
-    #[cfg(all(not(debug_assertions), feature = "analytics"))]
-    #[serde(skip)] // we can't send true
-    #[clap(long, env = "MEILI_NO_ANALYTICS")]
-    pub no_analytics: bool,
-
+    // /// Do not send analytics to Meili.
+    // #[cfg(all(not(debug_assertions), feature = "analytics"))]
+    // #[serde(skip)] // we can't send true
+    // #[clap(long, env = "MEILI_NO_ANALYTICS")]
+    // pub no_analytics: bool,
     /// The maximum size, in bytes, of the main lmdb database directory
     #[clap(long, env = "MEILI_MAX_INDEX_SIZE", default_value = "100 GiB")]
     pub max_index_size: Byte,
@@ -58,6 +57,10 @@ pub struct Opt {
     /// The maximum size, in bytes, of accepted JSON payloads
     #[clap(long, env = "MEILI_HTTP_PAYLOAD_SIZE_LIMIT", default_value = "100 MB")]
     pub http_payload_size_limit: Byte,
+
+    /// The maximum size, in bytes, of accepted JSON payloads
+    #[clap(long, env = "MEILI_MAX_SERVER_WORKER_COUNT")]
+    pub max_server_workers_count: Option<u8>,
 
     /// Read server certificates from CERTFILE.
     /// This should contain PEM-format certificates
