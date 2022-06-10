@@ -70,7 +70,7 @@ pub struct SearchHit {
 #[serde(rename_all = "camelCase")]
 pub struct SearchResult {
     pub hits: Vec<SearchHit>,
-    pub estimated_total_hits: u64,
+    pub nb_hits: u64,
     pub query: String,
     pub limit: usize,
     pub offset: usize,
@@ -239,7 +239,7 @@ impl Index {
 
         let result = SearchResult {
             hits: documents,
-            estimated_total_hits,
+           nb_hits: estimated_total_hits,
             query: query.q.clone().unwrap_or_default(),
             limit: query.limit,
             offset: query.offset.unwrap_or_default(),

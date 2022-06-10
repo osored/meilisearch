@@ -699,7 +699,7 @@ mod test {
 
         let result = SearchResult {
             hits: vec![],
-            estimated_total_hits: 29,
+            nb_hits: 29,
             query: "hello world".to_string(),
             limit: 24,
             offset: 0,
